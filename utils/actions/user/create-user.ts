@@ -9,6 +9,7 @@ type UserParams = {
 };
 
 export async function createUser({ email, name }: UserParams) {
+  console.log("============ creating user ============");
   try {
     const user = await prisma.user.create({
       data: {
