@@ -6,6 +6,7 @@ import { getUsers } from "~/utils/actions/user/get-users";
 export default async function Home() {
   const presentUser = await currentUser();
   const users = await getUsers();
+
   if (!users || users.length === 0 || !presentUser) {
     return (
       <section className="container p-3 mx-auto">

@@ -1,19 +1,11 @@
 "use server";
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import prisma from "~/utils/prisma";
 
 export async function getUsers() {
-  try {
+  if (prisma) {
+    console.log("============ getting users ============");
     const users = await prisma.user.findMany();
-    console.log("============ users ============");
-    console.log(users);
     return users;
-  } catch (err) {
-    const error = err as Error;
-    console.log("============ error ============");
-    console.log(error.message);
-  } finally {
-    prisma.$disconnect();
   }
+  return [];
 }

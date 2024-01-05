@@ -1,7 +1,5 @@
-import { PrismaClient } from "@prisma/client";
 import { revalidatePath } from "next/cache";
-
-const prisma = new PrismaClient();
+import prisma from "~/utils/prisma";
 
 type UserParams = {
   email: string;
@@ -10,20 +8,20 @@ type UserParams = {
 
 export async function createUser({ email, name }: UserParams) {
   console.log("============ creating user ============");
-  try {
+  if (prisma) {
+    console.log("============ Create If Block ============");
+
     const user = await prisma.user.create({
       data: {
-        email: email,
-        name: name,
+        email,
+        name,
       },
     });
+
     revalidatePath("/", "page");
-    console.log("============ user created ============");
+    console.log("============ Created User ============");
     console.log(user);
-  } catch (err) {
-    const error = err as Error;
-    console.log(error.message);
-  } finally {
-    await prisma.$disconnect();
+    return user;
   }
+  return null;
 }
