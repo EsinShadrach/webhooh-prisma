@@ -6,7 +6,7 @@ import { getUsers } from "~/utils/actions/user/get-users";
 export default async function Home() {
   const presentUser = await currentUser();
   const users = await getUsers();
-  if (!users || users.length === 0) {
+  if (!users || users.length === 0 || !presentUser) {
     return (
       <section className="container p-3 mx-auto">
         <Link
@@ -16,6 +16,14 @@ export default async function Home() {
           Sign in
         </Link>
         <br />
+        <SignedIn>
+          <SignOutButton>
+            <button className="p-2 px-6 bg-blue-300 text-blue-950 rounded-md">
+              Sign Out
+            </button>
+          </SignOutButton>
+        </SignedIn>
+        <br />
         No Users yet!
       </section>
     );
@@ -23,7 +31,7 @@ export default async function Home() {
 
   return (
     <section className="container p-3 mx-auto">
-      Present user: {presentUser?.username}
+      Present user: {presentUser.username}
       <br />
       <br />
       <SignedOut>
@@ -37,7 +45,7 @@ export default async function Home() {
       <SignedIn>
         <SignOutButton>
           <button className="p-2 px-6 bg-blue-300 text-blue-950 rounded-md">
-            Sign in
+            Sign Out
           </button>
         </SignOutButton>
       </SignedIn>
