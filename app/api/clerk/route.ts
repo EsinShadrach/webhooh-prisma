@@ -71,6 +71,20 @@ export async function POST(req: Request) {
     }
   }
 
+  if (eventType === "user.updated") {
+    console.log("==============  User Update Webhook ==============");
+    const user = await prisma.user.update({
+      where: {
+        clerkUid: evt.data.id,
+      },
+      data: {
+        name: evt.data.username!,
+      },
+    });
+    console.log("==============  User Update Success End ==============");
+    console.log(user);
+  }
+
   return new Response("", { status: 200 });
 }
 
