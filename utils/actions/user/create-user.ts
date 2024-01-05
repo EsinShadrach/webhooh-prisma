@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import { revalidatePath } from "next/cache";
 
 const prisma = new PrismaClient();
 
@@ -16,6 +17,7 @@ export async function createUser({ email, name }: UserParams) {
         name: name,
       },
     });
+    revalidatePath("/", "page");
     console.log("============ user created ============");
     console.log(user);
   } catch (err) {
