@@ -9,10 +9,10 @@ export function Dialog({ open }: { open: boolean }) {
   const dialogRef = useRef<HTMLDialogElement>(null);
 
   function handleClose() {
-    router.push("/");
     if (dialogRef.current) {
       dialogRef.current.close();
     }
+    router.push("/");
   }
 
   function handleClick(e: React.MouseEvent<HTMLDialogElement>) {
@@ -31,7 +31,11 @@ export function Dialog({ open }: { open: boolean }) {
     if (open) {
       handleOpen();
     } else {
-      handleClose();
+      // I don't feel comfortable with this, but it works
+      if (dialogRef.current) {
+        dialogRef.current.close();
+      }
+      router.push("/");
     }
   }, [open]);
 
