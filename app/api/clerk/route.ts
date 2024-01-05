@@ -2,6 +2,7 @@ import { Webhook } from "svix";
 import { headers } from "next/headers";
 import { WebhookEvent } from "@clerk/nextjs/server";
 import { createUser } from "~/utils/actions/user/create-user";
+import prisma from "~/utils/prisma";
 
 export async function POST(req: Request) {
   console.log("============== Calling Webhook ==============");
@@ -51,7 +52,23 @@ export async function POST(req: Request) {
     createUser({
       name: evt.data.username!,
       email: evt.data.email_addresses[0].email_address,
+      clerkUid: evt.data.id,
     });
+  }
+
+  if (eventType === "user.deleted") {
+    // Delete user from database
+    // Add a feild where we can have clerkUid
+    if (prisma) {
+      console.log("==============  User Deleted Webhook ==============");
+      const user = await prisma.user.delete({
+        where: {
+          clerkUid: evt.data.id,
+        },
+      });
+      console.log("==============  User Deleted Success End ==============");
+      console.log(user);
+    }
   }
 
   return new Response("", { status: 200 });

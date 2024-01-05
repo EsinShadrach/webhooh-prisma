@@ -4,9 +4,10 @@ import prisma from "~/utils/prisma";
 type UserParams = {
   email: string;
   name: string;
+  clerkUid: string;
 };
 
-export async function createUser({ email, name }: UserParams) {
+export async function createUser({ email, name, clerkUid }: UserParams) {
   console.log("============ creating user ============");
   if (prisma) {
     console.log("============ Create If Block ============");
@@ -15,6 +16,7 @@ export async function createUser({ email, name }: UserParams) {
       data: {
         email,
         name,
+        clerkUid,
       },
     });
 
